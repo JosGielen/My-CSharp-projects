@@ -1,0 +1,27 @@
+﻿<Window x:Class="StringArt.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StringArt"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="916" Width="950" Closing="Window_Closing" SizeToContent="WidthAndHeight" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="File" Margin="15,3,3,3" FontSize="12" FontWeight="Bold">
+                <MenuItem Header="Open Image" Name="mnuOpen" Click="mnuOpen_Click" Margin="3" FontSize="12" FontWeight="Bold"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Exit" Name="mnuExit" Click="mnuExit_Click" Margin="15,3,3,3" FontSize="12" FontWeight="Bold"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Canvas Grid.Row="1" x:Name="Canvas1" SnapsToDevicePixels="True" Background="White" Width="900" Height="900">
+            <Canvas.BitmapEffect>
+                <BlurBitmapEffect Radius="3"></BlurBitmapEffect>
+            </Canvas.BitmapEffect>
+        </Canvas>
+    </Grid>
+</Window>
