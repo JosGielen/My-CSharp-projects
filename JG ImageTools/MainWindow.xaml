@@ -1,0 +1,39 @@
+﻿<Window x:Class="ImageTools.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageTools"
+        mc:Ignorable="d"
+        Title="JG Image Tools" Height="1000" Width="1300" Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Name="MnuMain">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Name="MnuExit" Click="MnuExit_Click" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Open Image Editor" Name="MnuEditor" Click="MnuEditor_Click"></MenuItem>
+                <MenuItem Header="Open Image Viewer" Name="MnuViewer" Click="MnuViewer_Click" ></MenuItem>
+                <MenuItem Header="Reset ImageTools" Name="MnuReset" Click="MnuReset_Click" ></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Options" Name="MnuOptions" Click="MnuOptions_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Image Editor" Name="MnuEditorWindow" Click="MnuEditor_Click" ></MenuItem>
+            <MenuItem Header="Image Viewer" Name="MnuViewerWindow" Click="MnuViewer_Click" ></MenuItem>
+        </Menu>
+        <TreeView Grid.Row="1" Grid.Column="0" Margin="5,5,0,5" Name="TrvFolders"></TreeView>
+        <GridSplitter Grid.Row="1" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="#FF7A7979" Margin="0,5" ></GridSplitter>
+        <ScrollViewer Grid.Row="1" Grid.Column="2" Margin="5" VerticalScrollBarVisibility="Auto">
+            <WrapPanel Grid.Row="1" Grid.Column="2" Name="Thumbnails" MouseLeftButtonDown="Thumbnails_MouseLeftButtonDown"></WrapPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

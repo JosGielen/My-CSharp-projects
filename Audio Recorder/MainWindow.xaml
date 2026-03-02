@@ -1,0 +1,44 @@
+﻿<Window x:Class="Audio_Vieuwer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:jg="clr-namespace:JG_Graphs_Lite;assembly=JG_Graphs_Lite"
+        xmlns:local="clr-namespace:Audio_Vieuwer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="850" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" FontWeight="Bold">
+            <MenuItem Header="File" Margin="20,0,0,0">
+                <MenuItem Header="Open Wav File" Name="mnuOpen" Click="mnuOpen_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Exit" Name="mnuExit" Click="mnuExit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="PLAY" Name="mnuPlay" Margin="10,0,0,0" Click="btnPlay_Click"></MenuItem>
+        </Menu>
+        <jg:ScatterGraph Grid.Row="1" Grid.Column="0" Name="graphAmplitude" Margin="10"></jg:ScatterGraph>
+        <jg:ScatterGraph Grid.Row="2" Grid.Column="0" Name="graphFrequency" Margin="10"></jg:ScatterGraph>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <GroupBox Header="Select Source:" Margin="5,20,5,5">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <CheckBox Margin="3" Name="cbSpeakers" Click="cbSpeakers_Click" IsChecked="True">Speakers</CheckBox>
+                    <CheckBox Margin="3" Name="cbMicrophone" Click="cbMicrophone_Click">Microphone</CheckBox>
+                </StackPanel>
+            </GroupBox>
+            <Label Margin="5,5,5,2">FileName:</Label>
+            <TextBox Margin="5,2,5,5" Width="140" FontSize="12" Height="25" VerticalContentAlignment="Center" Name="txtFileName">Default</TextBox>
+            <Button Margin="5,15,5,5" Width="140" Height="35" FontSize="14" FontWeight="Bold" Foreground="Red" Name="btnRecord" Click="btnRecord_Click">START RECORDING</Button>
+        </StackPanel>
+        <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Name="btnPlay" Click="btnPlay_Click" Width="80" Height="30" FontSize="14" FontWeight="Bold">PLAY</Button>
+    </Grid>
+</Window>

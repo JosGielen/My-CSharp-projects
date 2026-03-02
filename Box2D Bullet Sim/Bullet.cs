@@ -1,0 +1,143 @@
+﻿using Box2D.NET;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+//using static Box2D_Test.Utilities;
+//using static Box2D.NET.B2Bodies;
+//using static Box2D.NET.B2MathFunction;
+
+namespace Box2D_Test
+{
+    internal class Bullet
+    {
+        public Rectangle Rect;
+        private double Width;
+        private double Height;
+        private Vector Location;
+        public double Angle;
+        public bool alive;
+        private Brush myLineColor;
+        private Brush myFillColor;
+        public B2BodyId my_ID;
+        private RotateTransform Rot;
+
+        public Bullet(Vector location, Size size, bool IsStatic, B2WorldId worldId)
+        {
+            Location = location;
+            Width = size.Width;
+            Height = size.Height;
+            Angle = 0;
+            Rect = new Rectangle()
+            {
+                Width = size.Width + 6,
+                Height = size.Height + 6,
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+                Fill = Brushes.DarkGray,
+                RadiusX = size.Width / 4,
+                RadiusY = size.Height / 4
+            };
+            Rect.SetValue(Canvas.LeftProperty, Location.X - size.Width / 2 - 3);
+            Rect.SetValue(Canvas.TopProperty, Location.Y - size.Height / 2 + 3);
+            Rot = new RotateTransform();
+            Rect.RenderTransform = Rot;
+            //Create a Box2D dynamic body
+            B2BodyDef bdef = B2Types.b2DefaultBodyDef();
+            if (IsStatic)
+            {
+                bdef.type = B2BodyType.b2_staticBody;
+            }
+            else
+            {
+                bdef.type = B2BodyType.b2_dynamicBody;
+            }
+            bdef.position = Utilities.Vector2Vec(location);
+            bdef.angularVelocity = 0.0f;
+            my_ID = B2Bodies.b2CreateBody(worldId, bdef);
+            //Create a Box2D RoundedBox shape
+            B2Polygon box = B2Geometries.b2MakeRoundedBox(Utilities.P2W(size.Width / 2), Utilities.P2W(size.Height / 2), Utilities.P2W(size.Height / 8));
+            B2ShapeDef shapeDef = B2Types.b2DefaultShapeDef();
+            shapeDef.density = 15.0f;
+            shapeDef.material.restitution = 0.0f;
+            shapeDef.material.friction = 0.01f;
+            //Connect the Box2D box shape to the Box2D dynamic body
+            B2Shapes.b2CreatePolygonShape(my_ID, shapeDef, box);
+        }
+
+        public Bullet(double width, double height)
+        {
+            Location = new Vector(0, 0);
+            Width = width;
+            Height = height;
+            Angle = 0;
+            Rect = new Rectangle()
+            {
+                Width = 0.0,
+                Height = 0.0,
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+                Fill = Brushes.White,
+            };
+        }
+
+        public Brush LineColor
+        {
+            get { return myLineColor; }
+            set
+            {
+                myLineColor = value;
+                Rect.Stroke = myLineColor;
+            }
+        }
+
+        public Brush FillColor
+        {
+            get { return myFillColor; }
+            set
+            {
+                myFillColor = value;
+                Rect.Fill = myFillColor;
+            }
+        }
+
+        public void Update()
+        {
+            //Get the new Location and Angle from the Box2D body
+            B2Vec2 position = B2Bodies.b2Body_GetPosition(my_ID);
+            B2Rot rotation = B2Bodies.b2Body_GetRotation(my_ID);
+            Location = Utilities.Vec2Vector(position);
+            Angle = B2MathFunction.b2Rot_GetAngle(rotation) * 180 / Math.PI;
+            //Update the Box location 
+            Rect.SetValue(Canvas.LeftProperty, Location.X - Width / 2);
+            Rect.SetValue(Canvas.TopProperty, Location.Y - Height / 2);
+            //Set the box rotation
+            Rot.CenterX = Width / 2;
+            Rot.CenterY = Height / 2;
+            Rot.Angle = Angle;
+        }
+
+        //Boxes that fall off the edges are removed
+        public void Edges(Canvas c)
+        {
+            alive = true;
+            if (Location.X + Width < 0) { alive = false; }
+            if (Location.Y + Height < 0) { alive = false; }
+            if (Location.X - Width > c.ActualWidth) { alive = false; }
+            if (Location.Y - Height > c.ActualHeight) { alive = false; }
+        }
+
+        public void Draw(Canvas c)
+        {
+            c.Children.Add(Rect);
+        }
+
+        public void Remove(Canvas c)
+        {
+            if (c.Children.Contains(Rect))
+            {
+                c.Children.Remove(Rect);
+            }
+        }
+    }
+}

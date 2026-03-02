@@ -1,0 +1,27 @@
+﻿<Window x:Class="Fluid_Sim.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Fluid_Sim"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="1000" Loaded="Window_Loaded" KeyDown="Window_KeyDown"
+        MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Margin="5" BorderBrush="Blue" BorderThickness="2">
+            <Canvas Name="canvas1"></Canvas>
+        </Border>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="5" Name="btnWind" Click="btnWind_Click" Width="80">Wind Tunnel</Button>
+            <Button Margin="5" Name="btnTank" Click="btnTank_Click" Width="80">Tank</Button>
+            <Button Margin="5" Name="btnPaint" Click="btnPaint_Click" Width="80">Paint</Button>
+            <CheckBox Name="cbSmoke" Click="cbSmoke_Click" Margin="5" VerticalAlignment="Center" IsChecked="True">Show Smoke</CheckBox>
+            <CheckBox Name="cbPressure" Click="cbPressure_Click" Margin="5" VerticalAlignment="Center">Show¨Pressure</CheckBox>
+            <CheckBox Name="cbStream" Click="cbStream_Click"  Margin="5" VerticalAlignment="Center">Show Streamlines</CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>

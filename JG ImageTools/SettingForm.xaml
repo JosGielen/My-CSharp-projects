@@ -1,0 +1,359 @@
+﻿<Window x:Class="ImageTools.SettingForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageTools"
+        mc:Ignorable="d"
+        Title="SettingForm" Height="480" Width="507" Loaded="Window_Loaded" Closing="Window_Closing" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Load Settings..." Name="MnuLoad" Click="MnuLoad_Click"></MenuItem>
+                <MenuItem Header="Save Settings" Name="MnuSave" Click="MnuSave_Click"></MenuItem>
+                <MenuItem Header="Save Settings As..." Name="MnuSaveAs" Click="MnuSaveAs_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Close" Name="MnuClose" Click="MnuClose_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Update" Name="MnuUpdate" Click="MnuUpdate_Click" ></MenuItem>
+        </Menu>
+        <TabControl Grid.Row="1">
+            <TabItem Header="ImageTools Settings">
+                <Border BorderBrush="Blue" BorderThickness="1" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5,5,5,0">Start Folder:</Label>
+                        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,5,5" Name="TxtSEMStart"></TextBox>
+                        <Button Grid.Row="1" Grid.Column="3" Margin="5,0,5,5" Width="60" Name="BtnSEMStart" Click="BtnSEMStart_Click" >Browse</Button>
+                        <Grid Grid.Row="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Margin="5,10,5,5">Default Image Format:</Label>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Margin="5,10,5,5" Width="120" HorizontalAlignment="Left" Name="CmbImageFormat" SelectedIndex="0">
+                                <ComboBoxItem>Bitmap (*.bmp)</ComboBoxItem>
+                                <ComboBoxItem>Jpeg (*.jpg)</ComboBoxItem>
+                                <ComboBoxItem>Gif(*.gif)</ComboBoxItem>
+                                <ComboBoxItem>Tiff(*.tif)</ComboBoxItem>
+                                <ComboBoxItem>Png(*.png)</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+                        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Thumbnails:" Margin="5,15,5,5" BorderBrush="Blue" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="2" Grid.Column="0" Margin="5">Background:</Label>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="5" Name="CmbThumbBackground"></ComboBox>
+                                <Label Grid.Row="3" Grid.Column="0" Margin="5">Selected Background:</Label>
+                                <ComboBox Grid.Row="3" Grid.Column="1" Margin="5" Name="CmbSelectBackground"></ComboBox>
+                                <Label Grid.Row="2" Grid.Column="2" Margin="25,5,5,5">FontSize:</Label>
+                                <Grid Grid.Row="2" Grid.Column="3" Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtFontSize"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center" Width="40" VerticalContentAlignment="Center">18</TextBox>
+                                    <RepeatButton Name="BtnFontSizeUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnFontSizeUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnFontSizeDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnFontSizeDown_Click">6</RepeatButton>
+                                </Grid>
+                                <Label Grid.Row="4" Grid.Column="2" Margin="20,5,5,5">Image Spacing:</Label>
+                                <Grid Grid.Row="4" Grid.Column="3" Margin="5" Width="80" HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtSpacing"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center" Width="40" VerticalContentAlignment="Center">5</TextBox>
+                                    <RepeatButton Name="BtnSpacingUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnSpacingUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnSpacingDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnSpacingDown_Click">6</RepeatButton>
+                                </Grid>
+                                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                    <Label Margin="5,5,5,5">Width:</Label>
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="13" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="13" />
+                                            <RowDefinition Height="13" />
+                                        </Grid.RowDefinitions>
+                                        <TextBox Name="TxtWidth"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center" Width="50" VerticalContentAlignment="Center">150</TextBox>
+                                        <RepeatButton Name="BtnWidthUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnWidthUP_Click" >5</RepeatButton>
+                                        <RepeatButton Name="BtnWidthDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnWidthDown_Click" >6</RepeatButton>
+                                    </Grid>
+                                    <Label Margin="25,5,5,5">Height:</Label>
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="13" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="13" />
+                                            <RowDefinition Height="13" />
+                                        </Grid.RowDefinitions>
+                                        <TextBox Name="TxtHeight"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center" Width="50" VerticalContentAlignment="Center">150</TextBox>
+                                        <RepeatButton Name="BtnHeightUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnHeightUP_Click" >5</RepeatButton>
+                                        <RepeatButton Name="BtnHeightDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnHeightDown_Click" >6</RepeatButton>
+                                    </Grid>
+                                </StackPanel>
+                                <CheckBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="30,5,5,5" VerticalAlignment="Center" Name="CbRoundedCorners" >Rounded Corners</CheckBox>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Border>
+            </TabItem>
+            <TabItem Header="Tool Settings">
+                <Border BorderBrush="Blue" BorderThickness="1" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="Tool Color:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Blue" BorderThickness="1" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" ></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Margin="5">Line Color:</Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Name="CmbToolColor"></ComboBox>
+                                <Label Grid.Row="1" Grid.Column="0" Margin="5">Text Color:</Label>
+                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" Name="CmbToolTextColor"></ComboBox>
+                                <Label Grid.Row="2" Grid.Column="0" Margin="5">Line Thickness:</Label>
+                                <Grid Grid.Row="2" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtLineThickness"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">1</TextBox>
+                                    <RepeatButton Name="BtnLinethicknessUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnLinethicknessUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnLineThicknessDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnLineThicknessDown_Click">6</RepeatButton>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Selected Tool Color:" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Blue" BorderThickness="1" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Margin="5">Line Color:</Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Name="CmbSelectColor"></ComboBox>
+                                <Label Grid.Row="1" Grid.Column="0" Margin="5">Text Color:</Label>
+                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" Name="CmbSelectTextColor"></ComboBox>
+                                <Label Grid.Row="2" Grid.Column="0" Margin="5">Line Thickness:</Label>
+                                <Grid Grid.Row="2" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtSelectLineThickness"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">1</TextBox>
+                                    <RepeatButton Name="BtnSelectLinethicknessUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnSelectLinethicknessUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnSelectLineThicknessDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnSelectLineThicknessDown_Click">6</RepeatButton>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <Label Grid.Row="1" Grid.Column="0" Margin="15,5,5,5">Decimal Places:</Label>
+                        <Grid Grid.Row="1" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="13" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="13" />
+                                <RowDefinition Height="13" />
+                            </Grid.RowDefinitions>
+                            <TextBox Name="TxtDecimals"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">1</TextBox>
+                            <RepeatButton Name="BtnDecimalsUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnDecimalsUP_Click">5</RepeatButton>
+                            <RepeatButton Name="BtnDecimalsDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnDecimalsDown_Click">6</RepeatButton>
+                        </Grid>
+                        <Label Grid.Row="1" Grid.Column="2" Margin="15,5,5,5">FontSize:</Label>
+                        <Grid Grid.Row="1" Grid.Column="3" Margin="5" Width="60" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="13" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="13" />
+                                <RowDefinition Height="13" />
+                            </Grid.RowDefinitions>
+                            <TextBox Name="TxtToolFontSize"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">18</TextBox>
+                            <RepeatButton Name="BtnToolFontSizeUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnToolFontSizeUP_Click">5</RepeatButton>
+                            <RepeatButton Name="BtnToolFontSizeDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnToolFontSizeDown_Click">6</RepeatButton>
+                        </Grid>
+
+
+                        <GroupBox Header="Handle Color:" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Blue" BorderThickness="1" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" ></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Margin="5">Line Color:</Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Name="CmbHandleColor"></ComboBox>
+                                <Label Grid.Row="1" Grid.Column="0" Margin="5">Handle Alpha:</Label>
+                                <Grid Grid.Row="1" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtHandleAlpha"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">50</TextBox>
+                                    <RepeatButton Name="BtnHandleAlphaUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnHandleAlphaUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnHandleAlphaDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnHandleAlphaDown_Click">6</RepeatButton>
+                                </Grid>
+                                <Label Grid.Row="2" Grid.Column="0" Margin="5">Handle Size:</Label>
+                                <Grid Grid.Row="2" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtHandleSize"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">8</TextBox>
+                                    <RepeatButton Name="BtnHandleSizeUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnHandleSizeUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnHandleSizeDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnHandleSizeDown_Click">6</RepeatButton>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Selected Handle Color:" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="Blue" BorderThickness="1" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Margin="5">Line Color:</Label>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Name="CmbSelectHandleColor"></ComboBox>
+                                <Label Grid.Row="1" Grid.Column="0" Margin="5">Handle Alpha:</Label>
+                                <Grid Grid.Row="1" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtSelectHandleAlpha"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">50</TextBox>
+                                    <RepeatButton Name="BtnSelectHandleAlphaUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnSelectHandleAlphaUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnSelectHandleAlphaDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnSelectHandleAlphaDown_Click">6</RepeatButton>
+                                </Grid>
+                                <Label Grid.Row="2" Grid.Column="0" Margin="5">Handle Size:</Label>
+                                <Grid Grid.Row="2" Grid.Column="1" Margin="5" Width="60" HorizontalAlignment="Left" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="13" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13" />
+                                        <RowDefinition Height="13" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="TxtSelectHandleSize"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TextAlignment="Center">8</TextBox>
+                                    <RepeatButton Name="BtnSelectHandleSizeUP"  Grid.Column="1" Grid.Row="0" FontSize="8" FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="BtnSelectHandleSizeUP_Click">5</RepeatButton>
+                                    <RepeatButton Name="BtnSelectHandleSizeDown"  Grid.Column="1" Grid.Row="1" FontSize="8"  FontFamily="Marlett" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="13" VerticalAlignment="Bottom" Click="BtnSelectHandleSizeDown_Click">6</RepeatButton>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+        <Border Grid.Row="2" Margin="10" BorderBrush="Blue" BorderThickness="1" CornerRadius="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Margin="5" Width="80" Name="BtnApply" Click="BtnApply_Click">Apply</Button>
+                <Button Grid.Column="1" Margin="5" Width="80" Name="BtnDefaults" Click="BtnDefaults_Click">Defaults</Button>
+                <Button Grid.Column="2" Margin="5" Width="80" Name="BtnOK" Click="BtnOK_Click" >OK</Button>
+                <Button Grid.Column="3" Margin="5" Width="80" Name="BtnCancel" Click="BtnCancel_Click">CANCEL</Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
