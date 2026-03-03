@@ -1,0 +1,42 @@
+﻿<Window x:Class="Zwerm.ZwermControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Zwerm"
+        mc:Ignorable="d"
+    Title="ZwermControl" Height="244" Width="313" HorizontalAlignment="Left" MaxHeight="350" MaxWidth="325" MinHeight="0" MinWidth="0" Loaded="Window_Loaded">
+    <Grid Width="286">
+        <Label Height="22" Margin="12,20,0,0" Name="Label1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132" Padding="5,0" VerticalContentAlignment="Center">Number of Units :</Label>
+        <Label Height="22" Margin="12,48,0,0" Name="Label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132" Padding="5,0" VerticalContentAlignment="Center">Unit Speed :</Label>
+        <Label Margin="12,76,0,0" Name="Label3" HorizontalAlignment="Left" Width="132" Height="22" VerticalAlignment="Top" Padding="5,0" VerticalContentAlignment="Center">Nearest Unit Count :</Label>
+        <Label Margin="12,104,0,0" Name="LabelPrefDistance" HorizontalAlignment="Left" Width="132" Height="22" VerticalAlignment="Top" Padding="5,0" VerticalContentAlignment="Center">Preferred Unit Distance :</Label>
+        <Label Height="22" Margin="12,132,0,0" Name="Label5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132" Padding="5,0" VerticalContentAlignment="Center">Unit View Distance :</Label>
+        <TextBox Height="22" Margin="230,20,0,0" Name="TxtUnitNumber" VerticalAlignment="Top" MaxLines="1" HorizontalAlignment="Left" Width="44">800</TextBox>
+        <TextBox Height="22" Margin="230,48,0,0" Name="TxtUnitSpeed" VerticalAlignment="Top" MaxLines="1" HorizontalAlignment="Left" Width="44">1.5</TextBox>
+        <TextBox Margin="230,76,0,0" Name="TxtNearestCount" Height="22" VerticalAlignment="Top" MaxLines="1" HorizontalAlignment="Left" Width="44">20</TextBox>
+        <TextBox Margin="230,104,0,0" Name="TxtPrefDistance" Height="22" VerticalAlignment="Top" MaxLines="1" HorizontalAlignment="Left" Width="44">10</TextBox>
+        <TextBox Height="22" Margin="230,132,0,0" Name="TxtViewDistance" VerticalAlignment="Top" MaxLines="1" HorizontalAlignment="Left" Width="44">50</TextBox>
+        <Button Height="23" HorizontalAlignment="Left" Margin="12,0,0,12" Name="BtnStart" VerticalAlignment="Bottom" Width="75" Click="BtnStart_Click">START</Button>
+        <Button Height="23" Margin="0,0,39,12" Name="BtnExit" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="71" Click="BtnExit_Click">EXIT</Button>
+        <Slider Height="22" HorizontalAlignment="Left" Margin="158,20,0,0" Name="SliderUnitNumber" VerticalAlignment="Top"
+                Width="58" Maximum="2000" IsMoveToPointEnabled="False" IsSelectionRangeEnabled="False" IsSnapToTickEnabled="True"
+                Delay="100" Focusable="True" SmallChange="10" LargeChange="50" Value="800" TickFrequency="10" ValueChanged="SliderUnitNumber_ValueChanged"/>
+        <Slider Delay="100" Focusable="True" Height="22" HorizontalAlignment="Left" IsMoveToPointEnabled="False"
+                IsSelectionRangeEnabled="False" IsSnapToTickEnabled="True" LargeChange="1" Margin="158,48,0,0" 
+                Maximum="5" Name="SliderUnitSpeed" SmallChange="0.1" VerticalAlignment="Top" Width="58" 
+                Value="1.5" TickFrequency="0.1" ValueChanged="SliderUnitSpeed_ValueChanged" />
+        <Slider Delay="100" Focusable="True" Height="22" HorizontalAlignment="Left" IsMoveToPointEnabled="False"
+                IsSelectionRangeEnabled="False" IsSnapToTickEnabled="True" LargeChange="10" Margin="158,76,0,0"
+                Maximum="50" Minimum="5" Name="SliderNearestCount" SmallChange="5" VerticalAlignment="Top" Width="58"
+                Value="20" TickFrequency="5" ValueChanged="SliderNearestCount_ValueChanged"/>
+        <Slider Delay="100" Focusable="True" Height="22" HorizontalAlignment="Left" IsMoveToPointEnabled="False"
+                IsSelectionRangeEnabled="False" IsSnapToTickEnabled="True" LargeChange="10" Margin="158,104,0,0"
+                Maximum="30" Name="SliderPrefDistance" SmallChange="1" VerticalAlignment="Top" Width="58"
+                Value="10" TickFrequency="5" ValueChanged="SliderPrefDistance_ValueChanged"/>
+        <Slider Delay="100" Focusable="True" Height="22" HorizontalAlignment="Left" IsMoveToPointEnabled="False"
+                IsSelectionRangeEnabled="False" IsSnapToTickEnabled="True" LargeChange="50" Margin="158,132,0,0"
+                Maximum="100" Name="SliderViewDistance" SmallChange="10" VerticalAlignment="Top" Width="58"
+                Value="50" TickFrequency="5" ValueChanged="SliderViewDistance_ValueChanged"/>
+    </Grid>
+</Window>
