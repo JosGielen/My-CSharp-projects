@@ -27,6 +27,8 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Grid.Row="3" Margin="80,10,10,10" Width="80" FontSize="14" FontWeight="Bold" Name="btnPlay" Click="btnPlay_Click">START</Button>
+            <Label FontSize="12" VerticalContentAlignment="Center" Margin="100,10,10,10">Sensitivity</Label>
+            <Slider Margin="10" Width="150" Name="sldSensitivity" ValueChanged="sldSensitivity_ValueChanged" Minimum="1000000" Maximum="10000000" Value="5000000" VerticalAlignment="Center" IsDirectionReversed="True"></Slider>
         </StackPanel>
     </Grid>
 </Window>

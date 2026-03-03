@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,7 +28,7 @@ namespace Audio_Spectrum
         private byte[] my_Buffer;
         private double[] Ydata;
         private double[] FreqYdata;
-        private double Ymax = 4000000;
+        private double Ymax;
         private int Stride = 0;
         private byte[] pixelData;
         private List<Color> my_Colors;
@@ -57,9 +56,9 @@ namespace Audio_Spectrum
             pixelData = new byte[(int)(Stride * image1.Height)];
             //Get a color palette
             ColorPalette cpal = new ColorPalette(Environment.CurrentDirectory + "\\Thermal2.cpl");
-            my_Colors = cpal.GetColors(256);
-            BitmapPalette bpal = new BitmapPalette(my_Colors);
-            bitmap = new WriteableBitmap(W, H, 96, 96, PixelFormats.Bgr24, bpal);
+            my_Colors = cpal.GetColors(1024);
+            bitmap = new WriteableBitmap(W, H, 96, 96, PixelFormats.Bgr24, null);
+            Ymax = sldSensitivity.Value;
         }
 
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
@@ -87,6 +86,8 @@ namespace Audio_Spectrum
             {
                 started = true;
                 btnPlay.Content = "STOP";
+                pixelData = new byte[(int)(Stride * image1.Height)];
+                bitmap = new WriteableBitmap(W, H, 96, 96, PixelFormats.Bgr24, null);
                 //Get the Default audio playback Device
                 MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
                 IEnumerable<MMDevice> CaptureDevices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active).ToArray();
@@ -127,9 +128,13 @@ namespace Audio_Spectrum
             else
             {
                 started = false;
-                btnPlay.Content = "START";
-                if (player != null) { player.Stop(); }
                 capture.StopRecording();
+                btnPlay.Content = "START";
+                if (player != null)
+                {
+                    player.Stop();
+                    player.Dispose();
+                }
             }
         }
 
@@ -144,6 +149,7 @@ namespace Audio_Spectrum
         //MaxBytes should be a whole fraction of the capture SampleRate.
         private void Capture_DataAvailable(object? sender, WaveInEventArgs e)
         {
+            if (!started) {return; }
             bufferedWaveProvider.AddSamples(e.Buffer, 0, e.BytesRecorded);
             while (bufferedWaveProvider.BufferedBytes > MaxBytes)
             {
@@ -209,7 +215,7 @@ namespace Audio_Spectrum
                 {
                     throw new NotSupportedException("Invalid Wave file format");
                 }
-                if (Ydata.Length > 0)
+                if (Ydata.Length > 0 && started)
                 {
                     //Calculate the Discreet Fourier Transform of both audio channels
                     FreqYdata = DFT.Process2double(Ydata);
@@ -223,7 +229,7 @@ namespace Audio_Spectrum
                             for (int I = 0; I < FreqYdata.Length; I++)
                             {
                                 pt = new Point(rectW * scanCount, H - (I + 1) * rectH);
-                                colorIndex = (int)(FreqYdata[I] / Ymax * 256);
+                                colorIndex = (int)(FreqYdata[I] / Ymax * 1024);
                                 if (colorIndex >= my_Colors.Count) { colorIndex = my_Colors.Count - 1;}
                                 SetPixelArea(bitmap, pt, rectW, rectH, my_Colors[colorIndex]);
                             }
@@ -249,9 +255,12 @@ namespace Audio_Spectrum
                             Int32Rect Intrect = new Int32Rect(0, 0, bitmap.PixelWidth - 1, bitmap.PixelHeight - 1);
                             bitmap.WritePixels(Intrect, pixelData, Stride, 0);
                             for (int I = 0; I < FreqYdata.Length; I++)
+                            //Set the Frequency amplitudes as a vertical line of color points on the right edge
                             {
                                 pt = new Point(rectW * scanCount, H - (I + 1) * rectH);
-                                SetPixelArea(bitmap, pt, rectW, rectH, my_Colors[(int)(FreqYdata[I] * my_Colors.Count / Ymax) % 256]);
+                                colorIndex = (int)(FreqYdata[I] / Ymax * 1024);
+                                if (colorIndex >= my_Colors.Count) { colorIndex = my_Colors.Count - 1; }
+                                SetPixelArea(bitmap, pt, rectW, rectH, my_Colors[colorIndex]);
                             }
                         }
                         image1.Source = bitmap;
@@ -278,17 +287,34 @@ namespace Audio_Spectrum
             WB.WritePixels(new Int32Rect((int)Pos.X, (int)Pos.Y, w, h), PixelData, 3 * w, 0);
         }
 
+        private void sldSensitivity_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Ymax = sldSensitivity.Value;
+        }
+
         private void Player_PlaybackStopped(object? sender, StoppedEventArgs e)
         {
-            if (capture != null) 
-            { 
-                capture.StopRecording(); 
+            started = false;
+            btnPlay.Content = "START";
+            if (capture != null)
+            {
+                capture.StopRecording();
             }
-            capture.Dispose();
-            volumeStream.Dispose();
-            mainOutputStream.Dispose();
-            player.Dispose();
-            Debug.Print("Player ended.");
+            if (volumeStream != null)
+            {
+                volumeStream.Close();
+                volumeStream.Dispose();
+            }
+            if (mainOutputStream != null)
+            {
+                mainOutputStream.Close();
+                mainOutputStream.Dispose();
+            }
+            if (player != null)
+            {
+                player.Stop();
+                player.Dispose();
+            }
         }
     }
 }
