@@ -1,0 +1,32 @@
+JG_Vertex File
+  Vertex Data 
+      Normal: 0 1 0
+      Vertex: 1.0 1.0 0.0
+      TexCoord: 1 0
+  End Vertex Data
+  Vertex Data 
+      Normal: 0 1 0
+      Vertex: -1.0 1.0 0.0
+      TexCoord: 1 1
+  End Vertex Data
+  Vertex Data 
+      Normal: 0 1 0
+      Vertex: -1.0 -1.0 0.0
+      TexCoord: 0 1
+  End Vertex Data
+    Vertex Data 
+      Normal: 0 1 0
+      Vertex: 1.0 1.0 0.0
+      TexCoord: 1 0
+  End Vertex Data
+  Vertex Data 
+      Normal: 0 1 0
+      Vertex: -1.0 -1.0 0.0
+      TexCoord: 0 1
+  End Vertex Data
+    Vertex Data 
+      Normal: 0 1 0
+      Vertex: 1.0 -1.0 0.0
+      TexCoord: 0 1
+  End Vertex Data
+End File
