@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace OpenTK_WPF
+namespace ShaderApp
 {
     public partial class MainWindow : Window
     {
@@ -37,6 +37,7 @@ namespace OpenTK_WPF
         private Cubemap cubemap;
         private DateTime LastRenderTime;
         private int Framecounter;
+        private double textBoxWidth;
 
         public MainWindow()
         {
@@ -48,6 +49,7 @@ namespace OpenTK_WPF
         {
             time = 0;
             zoom = 1.0f;
+            textBoxWidth = grdTextbox.ColumnDefinitions[2].ActualWidth;
             mouseDist = new Point();
             CubeMapFiles = new List<string>();
             textureFiles = new List<string>();
@@ -56,7 +58,6 @@ namespace OpenTK_WPF
             //Load the Default Vertex and Fragment Shaders
             VertexShaderFile = Environment.CurrentDirectory + "\\Default.vert";
             FragmentShaderFile = Environment.CurrentDirectory + "\\Default.frag";
-            //LoadShaders(VertexShaderFile, FragmentShaderFile);
             //Set-up the OpenTK GLWpfControl
             Initialize();
             //Show the fragment shader in the Textbox
@@ -82,6 +83,13 @@ namespace OpenTK_WPF
             ];
             //Set the background color
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            //Create the ShaderProgram
+            if (updateShaders)
+            {
+                LoadShaders(VertexShaderFile, FragmentShaderFile);
+            }
+            shader = new Shader(VertexShaderCode, FragmentShaderCode);
+            shader.Use();
             //Create the VertexArray
             VertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayHandle);
@@ -93,18 +101,11 @@ namespace OpenTK_WPF
             ElementBufferHandle = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferHandle);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
-            //Create the ShadeProgram
-            if (updateShaders)
-            {
-                LoadShaders(VertexShaderFile, FragmentShaderFile);
-            }
-            shader = new Shader(VertexShaderCode, FragmentShaderCode);
-            shader.Use();
             //Set the Vertex and texturecoördinate positions
-            int vertexLocation = shader.GetAttribLocation("aPosition");
+            int vertexLocation = shader.GetAttribLocation("aPosition");  //specified in the vertex shader
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
-            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord"); //specified in the vertex shader
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
         }
@@ -121,12 +122,14 @@ namespace OpenTK_WPF
                 Framecounter = 0;
             }
             time += 1.0f / 60.0f;
+            //Set the general data in the shader 
             shader.SetFloat("Time", time);
             shader.SetFloat("Zoom", zoom);
             shader.SetVector3("Mouse", new Vector3((float)mouseDist.X, (float)mouseDist.Y, 0.0f));
             shader.SetVector3("Resolution", new Vector3((float)OpenTkControl.ActualWidth, (float)OpenTkControl.ActualHeight, 0.0f));
-            //GL.Clear(ClearBufferMask.ColorBufferBit);
+            //Clear the OpenGL image buffers
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            //Use the VertexArray and textures
             GL.BindVertexArray(VertexArrayHandle);
             int offset = 0;
             if (useCubeMap && cubemap != null) 
@@ -138,24 +141,14 @@ namespace OpenTK_WPF
             {
                 textures[i].Use(TextureUnit.Texture0 + i + offset);
             }
+            //Use the shader and redraw the frame
             shader.Use();
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UnLoad();
-        }
-
-        private void UnLoad()
-        {
-            GL.BindTexture(TextureTarget.TextureCubeMap, 0);
-            GL.BindVertexArray(0);
-            GL.DeleteVertexArray(VertexArrayHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.DeleteBuffer(VertexBufferHandle);
-            GL.UseProgram(0);
-            GL.DeleteProgram(ProgramHandle);
+            Reset();
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
@@ -164,7 +157,7 @@ namespace OpenTK_WPF
             {
                 OpenTkControl.Render -= OpenTkControl_OnRender;
                 imgPlay.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\PlayIcon.jpg"));
-                UnLoad();
+                Reset();
                 rendering = false;
             }
             else
@@ -181,29 +174,11 @@ namespace OpenTK_WPF
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to load the Fragment Shader.", "Ray Tracing App Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Unable to load the Fragment Shader.", "ShaderApp Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-        public void LoadShaders(string vertexShaderFile, string fragmentShaderFile)
-        {
-            try
-            {
-                using (StreamReader reader = new StreamReader(vertexShaderFile))
-                {
-                    VertexShaderCode = reader.ReadToEnd();
-                }
-                using (StreamReader reader = new StreamReader(fragmentShaderFile))
-                {
-                    FragmentShaderCode = reader.ReadToEnd();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("LoadShaders was unable to load the shaders : " + ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
         #region "Mouse Events"
 
@@ -261,7 +236,7 @@ namespace OpenTK_WPF
                 FragmentShaderFile = openFileDialog1.FileName;
                 lblFileName.Content = Path.GetFileName(FragmentShaderFile);
                 updateShaders = true;
-                UnLoad();
+                Reset();
                 Initialize();
                 ShowFragmentShader(FragmentShaderFile);
                 zoom = 10.0f;
@@ -335,9 +310,6 @@ namespace OpenTK_WPF
             }
         }
 
-        /// <summary>
-        /// Adds a cubemap (overwrites any existing cubemap data in the Fragment Shader)
-        /// </summary>
         private void mnuLoadCubeMap_Click(object sender, RoutedEventArgs e)
         {
             //Select the 6 texture files that make up the CubeMap
@@ -402,9 +374,6 @@ namespace OpenTK_WPF
             LoadCubeMap();
         }
 
-        /// <summary>
-        /// Save the generated scene to an image file
-        /// </summary>
         private void mnuSaveImage_Click(object sender, RoutedEventArgs e)
         {
             Rect R = new Rect(OpenTkControl.Margin.Left, OpenTkControl.Margin.Top, OpenTkControl.ActualWidth, OpenTkControl.ActualHeight);
@@ -450,6 +419,23 @@ namespace OpenTK_WPF
             }
         }
 
+        private void mnuWindowState_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState != WindowState.Maximized)
+            {
+                textBoxWidth = grdTextbox.ColumnDefinitions[2].ActualWidth;
+                WindowState = WindowState.Maximized;
+                grdTextbox.ColumnDefinitions[2].Width = new GridLength(3.0);
+                mnuWindowState.Header = "Restore";
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+                grdTextbox.ColumnDefinitions[2].Width = new GridLength(textBoxWidth);
+                mnuWindowState.Header = "Full Screen";
+            }
+        }
+
         private void mnuExit_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
@@ -459,6 +445,44 @@ namespace OpenTK_WPF
 
 
         #region "Utilities"
+
+        /// <summary>
+        /// Load the Vertex and Fragment shaders from files
+        /// </summary>
+        /// <param name="vertexShaderFile"></param>
+        /// <param name="fragmentShaderFile"></param>
+        public void LoadShaders(string vertexShaderFile, string fragmentShaderFile)
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(vertexShaderFile))
+                {
+                    VertexShaderCode = reader.ReadToEnd();
+                }
+                using (StreamReader reader = new StreamReader(fragmentShaderFile))
+                {
+                    FragmentShaderCode = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("LoadShaders was unable to load the shaders : " + ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Reset the openGL context
+        /// </summary>
+        private void Reset()
+        {
+            GL.BindTexture(TextureTarget.TextureCubeMap, 0);
+            GL.BindVertexArray(0);
+            GL.DeleteVertexArray(VertexArrayHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.DeleteBuffer(VertexBufferHandle);
+            GL.UseProgram(0);
+            GL.DeleteProgram(ProgramHandle);
+        }
 
         /// <summary>
         /// Shows the FragmentShader in the TextBox and loads a Cubemap and texture files that are specified
@@ -568,5 +592,7 @@ namespace OpenTK_WPF
         }
 
         #endregion
+
+
     }
 }

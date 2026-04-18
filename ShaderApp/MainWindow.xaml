@@ -1,0 +1,68 @@
+﻿<Window x:Class="ShaderApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShaderApp"
+        xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
+        mc:Ignorable="d"
+        Title="Shaders Test App" Height="800" Width="1200" Loaded="Window_Loaded"
+        MouseDown="Window_MouseDown"  MouseMove="Window_MouseMove"  MouseUp="Window_MouseUp" 
+        MouseWheel="Window_MouseWheel" Closing="Window_Closing"  WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" FontSize="18" FontWeight="Bold">
+            <MenuItem Header="File">
+                <MenuItem Header="Load Fragment Shader" Name="mnuLoad" Click="mnuLoad_Click"></MenuItem>
+                <Separator Margin="5"></Separator>
+                <MenuItem Header="Save Fragment Shader" Name="mnuSave" Click="mnuSave_Click"></MenuItem>
+                <MenuItem Header="Save Fragment Shader As" Name="mnuSaveAs" Click="mnuSaveAs_Click"></MenuItem>
+                <Separator  Margin="5"></Separator>
+                <MenuItem Header="Exit" Name="mnuExit" Click="mnuExit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Load Texture" Name="mnuLoadTexture" Click="mnuLoadTexture_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Load CubeMap" Name="mnuLoadCubeMap" Click="mnuLoadCubeMap_Click"></MenuItem>
+                <MenuItem Header="Remove CubeMap" Name="mnuUnLoadCubeMap" Click="mnuUnLoadCubeMap_Click"></MenuItem>
+                <Separator  Margin="5"></Separator>
+                <MenuItem Header="Save Image" Name="mnuSaveImage" Click="mnuSaveImage_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Full Screen" Name="mnuWindowState" Click="mnuWindowState_Click"></MenuItem>
+        </Menu>
+        <Grid Grid.Row="1" Name="grdTextbox">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <glWpfControl:GLWpfControl Grid.Column="0" x:Name="OpenTkControl">
+                <glWpfControl:GLWpfControl.Settings>
+                    <glWpfControl:GLWpfControlSettings MajorVersion="4" MinorVersion="2"></glWpfControl:GLWpfControlSettings>
+                </glWpfControl:GLWpfControl.Settings>
+            </glWpfControl:GLWpfControl>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="White"></GridSplitter>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" FontSize="18" FontWeight="Bold" Margin="20,0,0,0" Name="lblFileName"></Label>
+                <Border Grid.Row="1"  BorderBrush="Blue" BorderThickness="2.0" Margin="5">
+                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TextBox Margin="5" FontFamily="Consolas"  FontSize="18" FontWeight="Bold" Name="txtShader" AcceptsReturn="True"></TextBox>
+                    </ScrollViewer>
+                </Border>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button  Width="80" Height="30" Margin="5" Name="btnPlay" Click="btnPlay_Click">
+                        <Image Name="imgPlay" Source="/PauseIcon.jpg"></Image>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

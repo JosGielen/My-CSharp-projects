@@ -3,7 +3,7 @@ using StbImageSharp;
 using System.IO;
 using System.Windows;
 
-namespace OpenTK_WPF
+namespace ShaderApp
 {
     internal class Cubemap
     {

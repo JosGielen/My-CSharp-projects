@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using System.Windows;
 
-namespace OpenTK_WPF
+namespace ShaderApp
 {
     // A simple class meant to help create shaders.
     public class Shader

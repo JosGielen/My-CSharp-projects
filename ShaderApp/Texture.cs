@@ -2,8 +2,9 @@
 using StbImageSharp;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
-namespace OpenTK_WPF
+namespace ShaderApp
 {
     public class Texture
     {
@@ -18,6 +19,11 @@ namespace OpenTK_WPF
             //Load the texture from a file
             try
             {
+                //BitmapImage bmp = new BitmapImage(new Uri(path));
+                //int Stride = bmp.PixelWidth * bmp.Format.BitsPerPixel / 8;
+                //byte[] pixelData = new byte[Stride * bmp.PixelHeight];
+                //bmp.CopyPixels(pixelData, Stride, 0);
+                //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp.PixelWidth, bmp.PixelHeight, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixelData);
                 using (Stream stream = File.OpenRead(path))
                 {
                     ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
