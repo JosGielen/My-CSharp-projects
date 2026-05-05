@@ -126,7 +126,7 @@ namespace ShaderApp
             shader.SetFloat("Time", time);
             shader.SetFloat("Zoom", zoom);
             shader.SetVector3("Mouse", new Vector3((float)mouseDist.X, (float)mouseDist.Y, 0.0f));
-            shader.SetVector3("Resolution", new Vector3((float)OpenTkControl.ActualWidth, (float)OpenTkControl.ActualHeight, 0.0f));
+            shader.SetVector3("Resolution", new Vector3((float)OpenTkControl.ActualWidth, (float)OpenTkControl.ActualHeight, 0.0f));            
             //Clear the OpenGL image buffers
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             //Use the VertexArray and textures
@@ -239,8 +239,9 @@ namespace ShaderApp
                 Reset();
                 Initialize();
                 ShowFragmentShader(FragmentShaderFile);
-                zoom = 10.0f;
-                mouseDist = new Point();
+                zoom = 1.0f;
+                time = 0.0f;
+                mouseDist = new Point(0.0, 0.0);
                 if (!rendering)
                 {
                     OpenTkControl.Render += OpenTkControl_OnRender;
@@ -426,7 +427,7 @@ namespace ShaderApp
                 textBoxWidth = grdTextbox.ColumnDefinitions[2].ActualWidth;
                 WindowState = WindowState.Maximized;
                 grdTextbox.ColumnDefinitions[2].Width = new GridLength(3.0);
-                mnuWindowState.Header = "Restore";
+                mnuWindowState.Header = "Restore Size";
             }
             else
             {
@@ -434,6 +435,13 @@ namespace ShaderApp
                 grdTextbox.ColumnDefinitions[2].Width = new GridLength(textBoxWidth);
                 mnuWindowState.Header = "Full Screen";
             }
+        }
+
+        private void mnuReset_Click(object sender, RoutedEventArgs e)
+        {
+            zoom = 1.0f;
+            time = 0.0f;
+            mouseDist = new Point(0.0, 0.0);
         }
 
         private void mnuExit_Click(object sender, RoutedEventArgs e)
@@ -591,8 +599,8 @@ namespace ShaderApp
             }
         }
 
-        #endregion
 
+        #endregion
 
     }
 }
